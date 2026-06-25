@@ -1,4 +1,5 @@
 *.class
+target/
 output/
 
 # IDE configurations

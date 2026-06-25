@@ -1,0 +1,38 @@
+{
+  "family": "frontend",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::PLACEHOLDER_ACCOUNT_ID:role/LabRole",
+  "taskRoleArn": "arn:aws:iam::PLACEHOLDER_ACCOUNT_ID:role/LabRole",
+  "containerDefinitions": [
+    {
+      "name": "frontend",
+      "image": "PLACEHOLDER_ACCOUNT_ID.dkr.ecr.PLACEHOLDER_REGION.amazonaws.com/frontend:latest",
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/frontend",
+          "awslogs-region": "PLACEHOLDER_REGION",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "healthCheck": {
+        "command": ["CMD-SHELL", "wget -q -O- http://localhost/ || exit 1"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 30
+      },
+      "essential": true
+    }
+  ]
+}
